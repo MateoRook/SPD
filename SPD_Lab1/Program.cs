@@ -23,15 +23,26 @@ namespace SPD_Lab1
 
                     line = sr.ReadLine();
                     string[] znaki = line.Split(new char[] {' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+
                     iloscZadan = int.Parse(znaki[0]);
                     iloscMaszyn = int.Parse(znaki[1]);
-                    int ilosc = iloscMaszyn * iloscZadan;
-                    int[] zadania = new int[ilosc];
-                    for (int i = 0; i < ilosc; i++)
+
+                    Zadanie[] zadania = new Zadanie[iloscZadan];
+                    for (int i = 0; i < iloscZadan; i++)
                     {
+                        line = sr.ReadLine();
                         znaki = line.Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-                        zadania[i]= int.Parse(znaki[0]);
-                        iloscMaszyn = int.Parse(znaki[1]);
+                        int[] liczby = new int[znaki.Length];
+
+                        for(int j = 0; j < znaki.Length; j++)
+                        {
+                            liczby[j] = int.Parse(znaki[j]);
+                        }
+                        zadania[i] = new Zadanie(iloscMaszyn, liczby);
+                    }
+                    foreach (var z in zadania)
+                    {
+                        z.Wypisz();
                     }
                 }
             }
