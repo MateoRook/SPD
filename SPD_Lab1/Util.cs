@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,18 +34,52 @@ namespace SPD_Lab1
                 }
             }
         }
-        public static int PoliczSpanC (int iloscZadan, int iloscMaszyn, Zadanie[] zadanie)
+
+        public static int CalculateSpanC (int amountOfTasks, int amountOfMachines, SchedulingTask[] task)
         {
-            int[] czasPracyMaszyny = new int[iloscMaszyn];
-            for (int i = 0; i < iloscZadan; i++)
+            int[] workTimeMachine = new int[amountOfMachines];
+            for (int i = 0; i < amountOfTasks; i++)
             {
-                czasPracyMaszyny[0] += zadanie[i].CzasNaMaszynie[0];
-                for (int j = 1; j < iloscMaszyn; j++)
+                workTimeMachine[0] += task[i].TimeOnMachine[0];
+                for (int j = 1; j < amountOfMachines; j++)
                 {
-                    czasPracyMaszyny[j] = Math.Max(czasPracyMaszyny[j - 1], czasPracyMaszyny[j]) + zadanie[i].CzasNaMaszynie[j];
+                    workTimeMachine[j] = Math.Max(workTimeMachine[j - 1], workTimeMachine[j]) + task[i].TimeOnMachine[j];
                 }
             }
-            return czasPracyMaszyny[iloscMaszyn - 1];
+            return workTimeMachine[amountOfMachines - 1];
+        }
+
+        public static SchedulingTask[] SeedData(out int amountOfTasks, out int amountOfMachines)
+        {
+            SchedulingTask[] tasks;
+            Console.Write("Ścieżka do pliku: ");
+            string path = Console.ReadLine();
+
+            using (StreamReader sr = new StreamReader(path))
+            {
+
+                string line = sr.ReadLine();
+                string[] signs = line.Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+
+                amountOfTasks = int.Parse(signs[0]);
+                amountOfMachines = int.Parse(signs[1]);
+
+                tasks = new SchedulingTask[amountOfTasks];
+
+                for (int i = 0; i < amountOfTasks; i++)
+                {
+                    line = sr.ReadLine();
+                    signs = line.Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                    int[] numbers = new int[signs.Length];
+
+                    for (int j = 0; j < signs.Length; j++)
+                    {
+                        numbers[j] = int.Parse(signs[j]);
+                    }
+                    tasks[i] = new SchedulingTask(amountOfMachines, numbers);
+                }
+            }
+            return tasks;
         }
     }
 }
