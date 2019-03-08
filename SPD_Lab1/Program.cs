@@ -14,7 +14,7 @@ namespace SPD_Lab1
             int iloscZadan, iloscMaszyn;
             string line;
             Zadanie[] zadania;
-            int minSpan;
+            int minSpan = int.MaxValue;
 
             try
             {
@@ -47,8 +47,20 @@ namespace SPD_Lab1
                 }
                 foreach (var p in Util<Zadanie>.Permute(zadania))
                 {
-                   // TODO: policz min C span
+                    //int[] czasPracyMaszyny = new int[iloscMaszyn];
+                    //for (int i = 0; i < iloscZadan; i++)
+                    //{
+                    //    czasPracyMaszyny[0] += p[i].CzasNaMaszynie[0];
+                    //    for (int j = 1; j < iloscMaszyn; j++)
+                    //    {
+                    //        czasPracyMaszyny[j] = Math.Max(czasPracyMaszyny[j - 1], czasPracyMaszyny[j]) + p[i].CzasNaMaszynie[j];
+                    //    }
+                    //}
+                    int czasWykonania = Util<Zadanie>.PoliczSpanC(iloscZadan, iloscMaszyn, p);
+                    Console.WriteLine($"Czas wykonania {czasWykonania}");
+                    minSpan = Math.Min(minSpan, czasWykonania);
                 }
+                Console.WriteLine($"Minimalny czas pracy to :{minSpan}");
             }
             catch (Exception e)
             {
