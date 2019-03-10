@@ -93,23 +93,34 @@ namespace SPD_Lab1
         {
             if (tasks[0].TimeOnMachine.Length > 3)
                 throw new ArgumentException("The number of working machines must lower or equal 3");
+
+            List<SchedulingTask> tasks2 = new List<SchedulingTask>();
             if (tasks[0].TimeOnMachine.Length == 3)
             {
                 for (int i = 0; i < tasks.Count; i++)
                 {
-                    SchedulingTask task = new SchedulingTask(2, tasks[0].TimeOnMachine[0] + tasks[0].TimeOnMachine[1],
-                        tasks[0].TimeOnMachine[1] + tasks[0].TimeOnMachine[2]);
-                    tasks.RemoveAt(0);
-                    tasks.Add(task);
+                    SchedulingTask task = new SchedulingTask(2, tasks[i].TimeOnMachine[0] + tasks[i].TimeOnMachine[1],
+                        tasks[i].TimeOnMachine[1] + tasks[i].TimeOnMachine[2]);
+                    tasks2.Add(task);
                 }
             }
-            return JohnsonsTwo(tasks);
+
+            foreach(var t in JohnsonsTwo(tasks2))
+            {
+                yield return tasks[t.JohnsonIndex];
+            }
         }
         private static IEnumerable<SchedulingTask> JohnsonsTwo(List<SchedulingTask> tasks)
         {
+            for(int i = 0; i < tasks.Count; i++)
+            {
+                tasks[i].JohnsonIndex = i;
+            }
+
             List<SchedulingTask> machineOne = new List<SchedulingTask>();
             List<SchedulingTask> machineTwo = new List<SchedulingTask>();
             SchedulingTask.TaskMinimum taskMinimum = new SchedulingTask.TaskMinimum();
+
             while (tasks.Count > 0)
             {
                 int i = 0;
@@ -135,13 +146,13 @@ namespace SPD_Lab1
                     tasks.RemoveAt(taskMinimum.TaskIndex);
                 }
             }
-            foreach (var task in machineOne)
+            foreach(var x in machineOne)
             {
-                yield return task;
+                yield return x;
             }
-            foreach (var task in machineTwo)
+            foreach (var x in machineTwo)
             {
-                yield return task;
+                yield return x;
             }
         }
     }

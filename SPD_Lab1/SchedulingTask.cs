@@ -9,6 +9,7 @@ namespace SPD_Lab1
     public class SchedulingTask
     { 
         public int[] TimeOnMachine { get; }
+        public int JohnsonIndex { get; set; }
 
         public SchedulingTask(int amountOfMachines, params int[] timeOnMachine)
         {
