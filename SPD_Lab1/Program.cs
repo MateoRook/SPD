@@ -38,7 +38,7 @@ namespace SPD_Lab1
                 {
                     c.WriteDown();
                 }
-                minSpan = Util<SchedulingTask>.CalculateSpanC(amountOfTasks, 3,
+                minSpan = Util<SchedulingTask>.CalculateSpanC(amountOfTasks, amountOfMachines,
                      Util<SchedulingTask>.JohnsonsThree(tasks.ToList()));
                 Console.WriteLine($"Minimalny czas pracy to: {minSpan}");
             }
