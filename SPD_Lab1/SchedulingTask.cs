@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace SPD_Lab1
 {
     public class SchedulingTask
-    {
+    { 
         public int[] TimeOnMachine { get; }
 
         public SchedulingTask(int amountOfMachines, params int[] timeOnMachine)
@@ -23,6 +23,28 @@ namespace SPD_Lab1
                 Console.Write($"{x} ");
             }
             Console.WriteLine();
+        }
+
+        public TaskMinimum FindMin ()
+        {
+            int min = int.MaxValue;
+            int index;
+            foreach  (int item in TimeOnMachine)
+            {
+                min = Math.Min(min, item);
+            }
+            index = Array.IndexOf(TimeOnMachine, min);
+            return new TaskMinimum {
+                MinValue = min,
+                MachineIndex = index
+            };
+        }
+
+        public struct TaskMinimum
+        {
+            public int MinValue { get; set; }
+            public int MachineIndex { get; set; }
+            public int TaskIndex { get; set; }
         }
     }
 }
