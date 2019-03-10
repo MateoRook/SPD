@@ -104,6 +104,14 @@ namespace SPD_Lab1
                     tasks2.Add(task);
                 }
             }
+            else
+            {
+                for (int i = 0; i < tasks.Count; i++)
+                {
+                    SchedulingTask task = new SchedulingTask(2, tasks[i].TimeOnMachine[0], tasks[i].TimeOnMachine[1]);
+                    tasks2.Add(task);
+                }
+            }
 
             foreach(var t in JohnsonsTwo(tasks2))
             {
