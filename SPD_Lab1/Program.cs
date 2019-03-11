@@ -24,23 +24,11 @@ namespace SPD_Lab1
                     int timeToComplete = Util<SchedulingTask>.CalculateSpanC(amountOfTasks, amountOfMachines, p);
                     //Console.WriteLine($"Czas wykonania {timeToComplete}");
                     minSpan = Math.Min(minSpan, timeToComplete);
-                    if (minSpan == 32)
-                    {
-                        foreach( var c in p)
-                        {
-                            c.WriteDown();
-                        }
-                        break;
-                    }
                 }
-                Console.WriteLine($"Minimalny czas pracy to: {minSpan}");
-                foreach (var c in Util<SchedulingTask>.JohnsonsThree(tasks.ToList()))
-                {
-                    c.WriteDown();
-                }
+                Console.WriteLine($"Uzyskany minimalny czas pracy za pomocą przegloądu zupełnego: {minSpan}");
                 minSpan = Util<SchedulingTask>.CalculateSpanC(amountOfTasks, amountOfMachines,
-                     Util<SchedulingTask>.JohnsonsThree(tasks.ToList()));
-                Console.WriteLine($"Minimalny czas pracy to: {minSpan}");
+                     Util<SchedulingTask>.Johnsons(tasks.ToList()));
+                Console.WriteLine($"Uzyskany minimalny czas pracy za pomocą Algotymu Johnsona: {minSpan}");
             }
             catch (Exception e)
             {

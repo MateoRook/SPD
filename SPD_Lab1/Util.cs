@@ -38,14 +38,6 @@ namespace SPD_Lab1
         public static int CalculateSpanC (int amountOfTasks, int amountOfMachines, IEnumerable<SchedulingTask> task)
         {
             int[] workTimeMachine = new int[amountOfMachines];
-            //for (int i = 0; i < amountOfTasks; i++)
-            //{
-            //    workTimeMachine[0] += task[i].TimeOnMachine[0];
-            //    for (int j = 1; j < amountOfMachines; j++)
-            //    {
-            //        workTimeMachine[j] = Math.Max(workTimeMachine[j - 1], workTimeMachine[j]) + task[i].TimeOnMachine[j];
-            //    }
-            //}
             foreach (var t in task)
             {
                 workTimeMachine[0] += t.TimeOnMachine[0];
@@ -89,42 +81,40 @@ namespace SPD_Lab1
             }
             return tasks;
         }
+
+        public static IEnumerable<SchedulingTask> Johnsons(List<SchedulingTask> tasks)
+        {
+            int amountOfMachines = tasks[0].TimeOnMachine.Length;
+            if (amountOfMachines > 3)
+                throw new ArgumentException("The number of working machines must lower or equal 3");
+            else if (amountOfMachines == 3)
+                return JohnsonsThree(tasks);
+            else
+                return JohnsonsTwo(tasks);
+        }
+
         public static IEnumerable<SchedulingTask> JohnsonsThree(List<SchedulingTask> tasks)
         {
-            if (tasks[0].TimeOnMachine.Length > 3)
-                throw new ArgumentException("The number of working machines must lower or equal 3");
-
             List<SchedulingTask> tasks2 = new List<SchedulingTask>();
-            if (tasks[0].TimeOnMachine.Length == 3)
+            for (int i = 0; i < tasks.Count; i++)
             {
-                for (int i = 0; i < tasks.Count; i++)
-                {
-                    SchedulingTask task = new SchedulingTask(2, tasks[i].TimeOnMachine[0] + tasks[i].TimeOnMachine[1],
-                        tasks[i].TimeOnMachine[1] + tasks[i].TimeOnMachine[2]);
-                    tasks2.Add(task);
-                }
-            }
-            else
-            {
-                for (int i = 0; i < tasks.Count; i++)
-                {
-                    SchedulingTask task = new SchedulingTask(2, tasks[i].TimeOnMachine[0], tasks[i].TimeOnMachine[1]);
-                    tasks2.Add(task);
-                }
+                SchedulingTask task = new SchedulingTask(2, tasks[i].TimeOnMachine[0] + tasks[i].TimeOnMachine[1],
+                    tasks[i].TimeOnMachine[1] + tasks[i].TimeOnMachine[2]);
+                tasks2.Add(task);
             }
 
-            foreach(var t in JohnsonsTwo(tasks2))
+            for (int i = 0; i < tasks2.Count; i++)
+            {
+                tasks2[i].JohnsonIndex = i;
+            }
+
+            foreach (var t in JohnsonsTwo(tasks2))
             {
                 yield return tasks[t.JohnsonIndex];
             }
         }
         private static IEnumerable<SchedulingTask> JohnsonsTwo(List<SchedulingTask> tasks)
         {
-            for(int i = 0; i < tasks.Count; i++)
-            {
-                tasks[i].JohnsonIndex = i;
-            }
-
             List<SchedulingTask> machineOne = new List<SchedulingTask>();
             List<SchedulingTask> machineTwo = new List<SchedulingTask>();
             SchedulingTask.TaskMinimum taskMinimum = new SchedulingTask.TaskMinimum();
@@ -154,7 +144,7 @@ namespace SPD_Lab1
                     tasks.RemoveAt(taskMinimum.TaskIndex);
                 }
             }
-            foreach(var x in machineOne)
+            foreach (var x in machineOne)
             {
                 yield return x;
             }
