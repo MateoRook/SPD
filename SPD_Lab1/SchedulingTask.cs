@@ -28,12 +28,8 @@ namespace SPD_Lab1
 
         public TaskMinimum FindMin ()
         {
-            int min = int.MaxValue;
-            int index;
-            foreach  (int item in TimeOnMachine)
-            {
-                min = Math.Min(min, item);
-            }
+            int min, index;
+            min = TimeOnMachine.Min<int>();
             index = Array.IndexOf(TimeOnMachine, min);
             return new TaskMinimum {
                 MinValue = min,
