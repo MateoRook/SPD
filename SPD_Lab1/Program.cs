@@ -13,11 +13,15 @@ namespace SPD_Lab1
         static void Main(string[] args)
         {
             SchedulingTask[] tasks;
+            string path;
             int minSpan = int.MaxValue;
             Stopwatch sw = new Stopwatch();
             try
             {
-                tasks = Util<SchedulingTask>.SeedData(out int amountOfTasks, out int amountOfMachines);
+                Console.Write("Ścieżka do pliku: ");
+                path = Console.ReadLine();
+
+                tasks = Util<SchedulingTask>.SeedData(out int amountOfTasks, out int amountOfMachines, path);
                 
                 foreach (var p in Util<SchedulingTask>.Permute(tasks))
                 {

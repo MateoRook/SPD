@@ -49,15 +49,12 @@ namespace SPD_Lab1
             return workTimeMachine[amountOfMachines - 1];
         }
 
-        public static SchedulingTask[] SeedData(out int amountOfTasks, out int amountOfMachines)
+        public static SchedulingTask[] SeedData(out int amountOfTasks, out int amountOfMachines, string path)
         {
             SchedulingTask[] tasks;
-            Console.Write("Ścieżka do pliku: ");
-            string path = Console.ReadLine();
 
             using (StreamReader sr = new StreamReader(path))
             {
-
                 string line = sr.ReadLine();
                 string[] signs = line.Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -100,12 +97,8 @@ namespace SPD_Lab1
             {
                 SchedulingTask task = new SchedulingTask(2, tasks[i].TimeOnMachine[0] + tasks[i].TimeOnMachine[1],
                     tasks[i].TimeOnMachine[1] + tasks[i].TimeOnMachine[2]);
+                task.JohnsonIndex = i;
                 tasks2.Add(task);
-            }
-
-            for (int i = 0; i < tasks2.Count; i++)
-            {
-                tasks2[i].JohnsonIndex = i;
             }
 
             foreach (var t in JohnsonsTwo(tasks2))
@@ -151,6 +144,30 @@ namespace SPD_Lab1
             foreach (var x in machineTwo)
             {
                 yield return x;
+            }
+        }
+
+        public static void CreateRandomDataSet(string pathToFile)
+        {
+            int amountOfTasks, amountOfMachines, timeOnMachine;
+
+            Random rand = new Random();
+
+            using (StreamWriter sr = new StreamWriter(pathToFile))
+            {
+                amountOfTasks = rand.Next(4, 11);
+                amountOfMachines = rand.Next(2, 4);
+                sr.WriteLine($"{amountOfTasks} {amountOfMachines}");
+
+                for (int i = 0; i < amountOfTasks; i++)
+                {
+                    for (int j = 0; j < amountOfMachines; j++)
+                    {
+                        timeOnMachine = rand.Next(100);
+                        sr.Write($"{timeOnMachine} ");
+                    }
+                    sr.Write(Environment.NewLine);
+                }
             }
         }
     }
