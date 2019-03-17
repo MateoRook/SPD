@@ -155,7 +155,7 @@ namespace SPD_Lab1
 
             using (StreamWriter sr = new StreamWriter(pathToFile))
             {
-                amountOfTasks = rand.Next(4, 11);
+                amountOfTasks = rand.Next(4, 12);
                 amountOfMachines = rand.Next(2, 4);
                 sr.WriteLine($"{amountOfTasks} {amountOfMachines}");
 

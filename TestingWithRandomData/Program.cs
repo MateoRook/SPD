@@ -45,7 +45,7 @@ namespace TestingWithRandomData
                         johnsonTime = sw.Elapsed;
 
                         swr.WriteLine($"{amountOfMachines} \t\t {amountOfTasks} \t\t" +
-                            $"{permuteTime.ToString("mm\\:ss\\.ffff")} \t {johnsonTime.ToString("mm\\:ss\\.ffff")}");// \t {minSpanPermute} {minSpanJohnson});
+                            $"{permuteTime.ToString("mm\\:ss\\.ffff")} \t {johnsonTime.ToString("mm\\:ss\\.ffff")} + \t {minSpanPermute} {minSpanJohnson}");
                     }
                 }
             }
