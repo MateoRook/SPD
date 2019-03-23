@@ -208,53 +208,39 @@ namespace SPD_Lab2
                 }
             }
 
-            tasks[tasks.Length - 1].TimeToEnd[amountOfMachines - 1] = tasks[tasks.Length - 1].TimeOnMachine[amountOfMachines - 1];
-            for (int i = amountOfMachines - 2; i >= 0; i--)
+            if (insertedAt == tasks.Length - 1)
             {
-                tasks[tasks.Length - 1].TimeToEnd[i] = tasks[tasks.Length - 1].TimeToEnd[i + 1] + tasks[tasks.Length - 1].TimeOnMachine[i];
-            }
-            for(int i = tasks.Length - 2; i >= 0; i--)
-            {
-                tasks[i].TimeToEnd[amountOfMachines - 1] = tasks[i + 1].TimeToEnd[amountOfMachines - 1] + tasks[i].TimeOnMachine[amountOfMachines - 1];
-            }
-            for (int i = tasks.Length - 2; i >= 0; i--)
-            {
-                for (int j = amountOfMachines - 2; j >= 0; j--)
+                tasks[tasks.Length - 1].TimeToEnd[amountOfMachines - 1] = tasks[tasks.Length - 1].TimeOnMachine[amountOfMachines - 1];
+                for (int i = amountOfMachines - 2; i >= 0; i--)
                 {
-                    tasks[i].TimeToEnd[j] = tasks[i].TimeOnMachine[j] + Math.Max(tasks[i + 1].TimeToEnd[j], tasks[i].TimeToEnd[j + 1]);
+                    tasks[tasks.Length - 1].TimeToEnd[i] = tasks[tasks.Length - 1].TimeToEnd[i + 1] + tasks[tasks.Length - 1].TimeOnMachine[i];
+                }
+                for (int i = tasks.Length - 2; i >= 0; i--)
+                {
+                    tasks[i].TimeToEnd[amountOfMachines - 1] = tasks[i + 1].TimeToEnd[amountOfMachines - 1] + tasks[i].TimeOnMachine[amountOfMachines - 1];
+                }
+                for (int i = tasks.Length - 2; i >= 0; i--)
+                {
+                    for (int j = amountOfMachines - 2; j >= 0; j--)
+                    {
+                        tasks[i].TimeToEnd[j] = tasks[i].TimeOnMachine[j] + Math.Max(tasks[i + 1].TimeToEnd[j], tasks[i].TimeToEnd[j + 1]);
+                    }
                 }
             }
-
-            //if (insertedAt < tasks.Length - 1)
-            //{
-            //    for (int i = insertedAt; i >= 0; i--)
-            //    {
-            //        tasks[i].TimeToEnd[0] = tasks[i + 1].TimeToEnd[0] + tasks[i].TimeOnMachine[0];
-            //        for (int j = amountOfMachines - 1; j > 0; j--)
-            //        {
-            //            tasks[i].TimeToEnd[j] = tasks[tasks.Length - 1].TotalTimeOnMachine[amountOfMachines - 1]
-            //                - Math.Max(tasks[i].TotalTimeOnMachine[j], tasks[i + 1].TotalTimeOnMachine[j - 1]) + tasks[i].TimeOnMachine[j];
-            //        }
-            //    }
-            //}
-            //else
-            //{
-            //    tasks[tasks.Length - 1].TimeToEnd[amountOfMachines - 1] = tasks[tasks.Length - 1].TimeOnMachine[amountOfMachines - 1];
-            //    for (int i = amountOfMachines - 2; i >= 0; i--)
-            //    {
-            //        tasks[tasks.Length - 1].TimeToEnd[i] = tasks[tasks.Length - 1].TimeToEnd[i + 1] + tasks[tasks.Length - 1].TimeOnMachine[i];
-            //    }
-
-            //    for (int i = insertedAt - 1; i >= 0; i--)
-            //    {
-            //        tasks[i].TimeToEnd[0] = tasks[i + 1].TimeToEnd[0] + tasks[i].TimeOnMachine[0];
-            //        for (int j = amountOfMachines - 1; j > 0; j--)
-            //        {
-            //            tasks[i].TimeToEnd[j] = tasks[tasks.Length - 1].TotalTimeOnMachine[amountOfMachines - 1]
-            //                - Math.Max(tasks[i].TotalTimeOnMachine[j], tasks[i + 1].TotalTimeOnMachine[j - 1]) + tasks[i].TimeOnMachine[j];
-            //        }
-            //    }
-            //}
+            else
+            {
+                for (int i = insertedAt; i >= 0; i--)
+                {
+                    tasks[i].TimeToEnd[amountOfMachines - 1] = tasks[i + 1].TimeToEnd[amountOfMachines - 1] + tasks[i].TimeOnMachine[amountOfMachines - 1];
+                }
+                for (int i = insertedAt; i >= 0; i--)
+                {
+                    for (int j = amountOfMachines - 2; j >= 0; j--)
+                    {
+                        tasks[i].TimeToEnd[j] = tasks[i].TimeOnMachine[j] + Math.Max(tasks[i + 1].TimeToEnd[j], tasks[i].TimeToEnd[j + 1]);
+                    }
+                }
+            }
         }
     }
 }
