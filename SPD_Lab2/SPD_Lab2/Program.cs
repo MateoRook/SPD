@@ -11,26 +11,24 @@ namespace SPD_Lab2
         static void Main(string[] args)
         {
             SchedulingTask[] tasks;
+            List<SchedulingTask> result;
             string path;
             int minSpan = int.MaxValue;
-            try
-            {
+
                 Console.Write("Ścieżka do pliku: ");
                 path = Console.ReadLine();
 
                 tasks = Util<SchedulingTask>.SeedData(out int amountOfTasks, out int amountOfMachines, path);
-                //foreach(var p in Util<SchedulingTask>.NEH(tasks.ToList()))
-                //{
-                //    p.WriteDown();
-                //}
-                minSpan = Util<SchedulingTask>.CalculateSpanC(amountOfTasks, amountOfMachines, 
+
+                minSpan = Util<SchedulingTask>.CalculateSpanC(amountOfTasks, amountOfMachines,
                     Util<SchedulingTask>.NEH(tasks.ToList()));
+
                 Console.WriteLine($"Minmalny czas trwania to: {minSpan}");
-            }
-            catch (Exception e)
-            {
-                Console.Write(e.Message); Console.ReadKey();
-            }
+
+                result = Util<SchedulingTask>.NEHAccelerated(tasks.ToList());
+                minSpan = result[result.Count - 1].TotalTimeOnMachine[amountOfMachines - 1];
+                Console.WriteLine($"Minmalny czas trwania to: {minSpan}");
+
         }
     }
 }
