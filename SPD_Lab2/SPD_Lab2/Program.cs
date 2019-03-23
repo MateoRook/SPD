@@ -15,20 +15,24 @@ namespace SPD_Lab2
             string path;
             int minSpan = int.MaxValue;
 
-                Console.Write("Ścieżka do pliku: ");
-                path = Console.ReadLine();
+            Console.Write("Ścieżka do pliku: ");
+            path = Console.ReadLine();
 
-                tasks = Util<SchedulingTask>.SeedData(out int amountOfTasks, out int amountOfMachines, path);
+            tasks = Util<SchedulingTask>.SeedData(out int amountOfTasks, out int amountOfMachines, path);
 
-                minSpan = Util<SchedulingTask>.CalculateSpanC(amountOfTasks, amountOfMachines,
-                    Util<SchedulingTask>.NEH(tasks.ToList()));
+            minSpan = Util<SchedulingTask>.CalculateSpanC(amountOfTasks, amountOfMachines,
+                Util<SchedulingTask>.NEH(tasks.ToList()));
 
-                Console.WriteLine($"Minmalny czas trwania to: {minSpan}");
+            Console.WriteLine($"Minmalny czas trwania to: {minSpan}");
 
-                result = Util<SchedulingTask>.NEHAccelerated(tasks.ToList());
-                minSpan = result[result.Count - 1].TotalTimeOnMachine[amountOfMachines - 1];
-                Console.WriteLine($"Minmalny czas trwania to: {minSpan}");
+            result = Util<SchedulingTask>.NEHAccelerated(tasks.ToList());
+            minSpan = result[result.Count - 1].TotalTimeOnMachine[amountOfMachines - 1];
+            Console.WriteLine($"Minmalny czas trwania to: {minSpan}");
 
+            minSpan = Util<SchedulingTask>.CalculateSpanC(amountOfTasks, amountOfMachines,
+                Util<SchedulingTask>.NEHMod(tasks.ToList()));
+
+            Console.WriteLine($"Minmalny czas trwania to: {minSpan}");
         }
     }
 }

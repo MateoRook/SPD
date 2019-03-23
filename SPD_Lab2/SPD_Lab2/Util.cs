@@ -124,6 +124,83 @@ namespace SPD_Lab2
             }
             return order;
         }
+        private static int FindX(List<SchedulingTask> order, int j, int spanC)
+        {
+            int diffrence, currentValue;
+            int maxDiffrence = int.MinValue;
+            int x = 0;
+            SchedulingTask taskX;
+            for (int i = 0; i < order.Count; i++)
+            {
+                if (i == j)
+                    continue;
+                taskX = order.ElementAt(i);
+                order.RemoveAt(i);
+                currentValue = CalculateSpanC(order.Count, order[0].TimeOnMachine.Length, order);
+                diffrence = spanC - currentValue;
+                if (diffrence > maxDiffrence)
+                {
+                    maxDiffrence = diffrence;
+                    x = i;
+                }
+                order.Insert(i, taskX);
+            }
+            return x;
+        }
+
+        private static void InsertAndReinsert(List<SchedulingTask> tasks, List<SchedulingTask> order, int amountOfMachines, int i)
+        {
+            int index = 0;
+            int currentValue = int.MaxValue;
+            int howLong = order.Count + 1;
+            int localMin = int.MaxValue;
+            int x = 0;
+            SchedulingTask taskX;
+            for (int j = 0; j < howLong; j++)
+            {
+                order.Insert(j, tasks.ElementAt(i));
+                currentValue = CalculateSpanC(order.Count, amountOfMachines, order);
+                if (currentValue < localMin)
+                {
+                    localMin = currentValue;
+                    index = j;
+                }
+                order.RemoveAt(j);
+            }
+            order.Insert(index, tasks.ElementAt(i));
+            x = FindX(order, index, localMin);
+            index = x;
+            taskX = order.ElementAt(x);
+            order.RemoveAt(x);
+            for (int k = 0; k < howLong; k++)
+            {
+                if (k == x)
+                    continue;
+                order.Insert(k, taskX);
+                currentValue = CalculateSpanC(order.Count, amountOfMachines, order);
+                if (currentValue < localMin)
+                {
+                    localMin = currentValue;
+                    index = k;
+                }
+                order.RemoveAt(k);
+            }
+            order.Insert(index, taskX);
+        }
+
+        public static List<SchedulingTask> NEHMod(List<SchedulingTask> tasks)
+        {
+            tasks = tasks.OrderByDescending(t => t.TimeOnMachine.Sum()).ToList();
+            int amountOfMachines = tasks.First().TimeOnMachine.Length;
+
+            List<SchedulingTask> order = new List<SchedulingTask>();
+            for (int i = 0; i < tasks.Count; i++)
+            {
+                InsertAndReinsert(tasks, order, amountOfMachines, i);
+            }
+            return order;
+        }
+
         private static void CalculateBestOrder2(List<SchedulingTask> tasks, List<SchedulingTask> order, int amountOfMachines, int i)
         {
             int index = 0;
