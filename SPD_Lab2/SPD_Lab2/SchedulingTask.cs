@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SPD_Lab2
 {
-    class SchedulingTask
+    public class SchedulingTask
     {
         public int[] TimeOnMachine { get; }
         public int[] TotalTimeOnMachine { get; set; }

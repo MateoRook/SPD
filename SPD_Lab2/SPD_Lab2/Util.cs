@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SPD_Lab2
 {
-    static class Util<T>
+    public static class Util<T>
     {
         public static int CalculateSpanC(int amountOfTasks, int amountOfMachines, IEnumerable<SchedulingTask> task)
         {
@@ -316,6 +316,27 @@ namespace SPD_Lab2
                     {
                         tasks[i].TimeToEnd[j] = tasks[i].TimeOnMachine[j] + Math.Max(tasks[i + 1].TimeToEnd[j], tasks[i].TimeToEnd[j + 1]);
                     }
+                }
+            }
+        }
+        public static void CreateRandomDataSet(string pathToFile, int amountOfTasks, int amountOfMachines)
+        {
+            int  timeOnMachine;
+
+            Random rand = new Random();
+
+            using (StreamWriter sr = new StreamWriter(pathToFile))
+            {
+                sr.WriteLine($"{amountOfTasks} {amountOfMachines}");
+
+                for (int i = 0; i < amountOfTasks; i++)
+                {
+                    for (int j = 0; j < amountOfMachines; j++)
+                    {
+                        timeOnMachine = rand.Next(100);
+                        sr.Write($"{timeOnMachine} ");
+                    }
+                    sr.Write(Environment.NewLine);
                 }
             }
         }

@@ -26,7 +26,8 @@ namespace SPD_Lab2
             Console.WriteLine($"Minmalny czas trwania to: {minSpan}");
 
             result = Util<SchedulingTask>.NEHAccelerated(tasks.ToList());
-            minSpan = result[result.Count - 1].TotalTimeOnMachine[amountOfMachines - 1];
+            minSpan = Util<SchedulingTask>.CalculateSpanC2(Util<SchedulingTask>.NEHAccelerated(tasks.ToList()).ToArray(), 0);
+            //minSpan = result[result.Count - 1].TotalTimeOnMachine[amountOfMachines - 1];
             Console.WriteLine($"Minmalny czas trwania to: {minSpan}");
 
             minSpan = Util<SchedulingTask>.CalculateSpanC(amountOfTasks, amountOfMachines,
