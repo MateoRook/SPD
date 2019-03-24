@@ -10,10 +10,10 @@ namespace JohnsonsVsNEH
         static void Main(string[] args)
         {
             string dataFileName = "DataSetJonNeh.txt";
-            const string resultFileName = "resultsJN1.txt";
-            const string resultFileName2 = "resultsJN2.txt";
+            const string resultFileName = "resultsPN1.txt";
+            const string resultFileName2 = "resultsPN2.txt";
             int minSpanNEH = 0;
-            int minSpanJohnson = 0;
+            int minSpanPermute = int.MaxValue;
             Stopwatch sw = new Stopwatch();
             TimeSpan NEHT = new TimeSpan(), JohnsonT = new TimeSpan();
             int amountOfMachines = 0, amountOfTasks = 0;
@@ -23,8 +23,9 @@ namespace JohnsonsVsNEH
             {
                 using (StreamWriter swr = new StreamWriter(resultFileName))
                 {
-                    swr.WriteLine("ilość maszyn;ilość zadań;NEH;NEHC;John;JohnC");
-                    for (int k = 2; k < 50; k++)
+                    swr.WriteLine("ilość maszyn;ilość zadań;NEH;NEHC;Permute;PermuteC");
+                    //swr.WriteLine("ilość maszyn;ilość zadań;NEH;NEHC;John;JohnC");
+                    for (int k = 2; k < 10; k++)
                     {
                         amountOfTasks = k;
                         amountOfMachines = 2;
@@ -41,23 +42,32 @@ namespace JohnsonsVsNEH
                             NEHT += sw.Elapsed;
 
                             sw.Restart();
-                            minSpanJohnson = SPD_Lab1.Util<SPD_Lab1.SchedulingTask>.CalculateSpanC(amountOfTasks, amountOfMachines,
-                                SPD_Lab1.Util<SPD_Lab1.SchedulingTask>.Johnsons(tasksJohn.ToList()));
+                            foreach (var p in SPD_Lab1.Util<SPD_Lab1.SchedulingTask>.Permute(tasksJohn))
+                            {
+                                int timeToComplete = SPD_Lab1.Util<SPD_Lab1.SchedulingTask>.CalculateSpanC(amountOfTasks, amountOfMachines, p);
+                                //Console.WriteLine($"Czas wykonania {timeToComplete}");
+                                if (j == 19)
+                                    minSpanPermute = Math.Min(minSpanPermute, timeToComplete);
+                            }
+                            //minSpanJohnson = SPD_Lab1.Util<SPD_Lab1.SchedulingTask>.CalculateSpanC(amountOfTasks, amountOfMachines,
+                            //    SPD_Lab1.Util<SPD_Lab1.SchedulingTask>.Johnsons(tasksJohn.ToList()));
                             JohnsonT += sw.Elapsed;
-                        }
+                        }         
                         NEHT /= 20;
                         JohnsonT /= 20;
                         swr.WriteLine($"{amountOfMachines};{amountOfTasks};{minSpanNEH};{NEHT.ToString("mm\\:ss\\.ffff")};" +
-                        $"{minSpanJohnson};{JohnsonT.ToString("mm\\:ss\\.ffff")}");
+                        $"{minSpanPermute};{JohnsonT.ToString("mm\\:ss\\.ffff")}");
                         NEHT = new TimeSpan(0);
                         JohnsonT = new TimeSpan(0);
+                        minSpanPermute = int.MaxValue;
                     }
                 }
 
                 using (StreamWriter swr = new StreamWriter(resultFileName2))
                 {
-                    swr.WriteLine("ilość maszyn;ilość zadań;NEH;NEHC;John;JohnC");
-                    for (int k = 2; k < 50; k++)
+                    swr.WriteLine("ilość maszyn;ilość zadań;NEH;NEHC;Permute;PermuteC");
+                    //swr.WriteLine("ilość maszyn;ilość zadań;NEH;NEHC;John;JohnC");
+                    for (int k = 2; k < 10; k++)
                     {
                         amountOfTasks = k;
                         amountOfMachines = 3;
@@ -74,16 +84,24 @@ namespace JohnsonsVsNEH
                             NEHT += sw.Elapsed;
 
                             sw.Restart();
-                            minSpanJohnson = SPD_Lab1.Util<SPD_Lab1.SchedulingTask>.CalculateSpanC(amountOfTasks, amountOfMachines,
-                                SPD_Lab1.Util<SPD_Lab1.SchedulingTask>.Johnsons(tasksJohn.ToList()));
+                            foreach (var p in SPD_Lab1.Util<SPD_Lab1.SchedulingTask>.Permute(tasksJohn))
+                            {
+                                int timeToComplete = SPD_Lab1.Util<SPD_Lab1.SchedulingTask>.CalculateSpanC(amountOfTasks, amountOfMachines, p);
+                                //Console.WriteLine($"Czas wykonania {timeToComplete}");
+                                if (j == 19)
+                                    minSpanPermute = Math.Min(minSpanPermute, timeToComplete);
+                            }
+                            //minSpanJohnson = SPD_Lab1.Util<SPD_Lab1.SchedulingTask>.CalculateSpanC(amountOfTasks, amountOfMachines,
+                            //    SPD_Lab1.Util<SPD_Lab1.SchedulingTask>.Johnsons(tasksJohn.ToList()));
                             JohnsonT += sw.Elapsed;
                         }
                         NEHT /= 20;
                         JohnsonT /= 20;
                         swr.WriteLine($"{amountOfMachines};{amountOfTasks};{minSpanNEH};{NEHT.ToString("mm\\:ss\\.ffff")};" +
-                        $"{minSpanJohnson};{JohnsonT.ToString("mm\\:ss\\.ffff")}");
+                        $"{minSpanPermute};{JohnsonT.ToString("mm\\:ss\\.ffff")}");
                         NEHT = new TimeSpan(0);
                         JohnsonT = new TimeSpan(0);
+                        minSpanPermute = int.MaxValue;
                     }
                 }
             }
