@@ -23,7 +23,7 @@ namespace SPD_Lab2
             return workTimeMachine[amountOfMachines - 1];
         }
 
-        public static int CalculateSpanC2(SchedulingTask[] tasks, int insertedAt)
+        public static int CalculateSpanC2(SchedulingTask[] tasks, int insertedAt=0)
         {
             int amountOfMachines = tasks[0].TimeOnMachine.Length;
             int result;

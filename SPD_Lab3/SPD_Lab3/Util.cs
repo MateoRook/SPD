@@ -8,12 +8,14 @@ namespace SPD_Lab3
 {
     public static class Util<T>
     {
-        public static List<SchedulingTask> SimulatedAnnealing(List<SchedulingTask> tasks)
+        public static List<SchedulingTask> SimulatedAnnealing(List<SchedulingTask> tasks,
+            Action<List<SchedulingTask>, int, int> action, 
+            double u = 0.8,
+            double T0 = 80)
         {
-            List<SchedulingTask> piZero = SPD_Lab2.Util<SchedulingTask>.NEH(tasks).ToList();
+            List<SchedulingTask> piZero = SPD_Lab2.Util<SchedulingTask>.NEHAccelerated(tasks).ToList();
             Random random = new Random();
-            double T0 = 73;
-            double TEND = 12.213;
+            double TEND = 1;
             double probability;
             while (TEND < T0)
             {
@@ -22,21 +24,21 @@ namespace SPD_Lab3
                 List<SchedulingTask> piNext = temp.ToList();
                 int one = random.Next(0, tasks.Count - 1);
                 int two = random.Next(0, tasks.Count - 1);
-                Swap(piNext, one, two);
+                action(piNext, one, two);
+                //Swap(piNext, one, two);
                 probability = CalculateProbability(piZero, piNext, T0);
                 double decide = random.NextDouble();
                 if (probability >= decide)
                 {
                     piZero = piNext;
                 }
-                T0 = Cooling(T0);
+                T0 = Cooling(T0, u);
             }
             return piZero;
         }
 
-        public static double Cooling(double temperature)
+        public static double Cooling(double temperature, double u = 0.8)
         {
-            double u = 0.8;
             return temperature * u;
         }
 
