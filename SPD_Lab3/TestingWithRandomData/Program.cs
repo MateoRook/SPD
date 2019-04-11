@@ -15,6 +15,7 @@ namespace TestingWithRandomData
             const string resultFileName = "SwapVsInsert.txt";
             const string resultFileName2 = "ParamU.txt";
             const string resultFileName3 = "ParamT0.txt";
+            const string resultFileName4 = "ProbMOD.txt";
             int minSpanSwap = 0;
             int minSpanInsert = 0;
             int amountOfMachines = 20, amountOfTasks = 500;
@@ -51,7 +52,7 @@ namespace TestingWithRandomData
                 //}
 
 
-                // parametr u
+                //parametr u
                 //double[] u = { 0.8, 0.9, 0.95, 0.99, 0.9999 };
                 //int[] best = { 0, 0, 0, 0, 0 };
                 //using (StreamWriter swr = new StreamWriter(resultFileName2))
@@ -88,35 +89,100 @@ namespace TestingWithRandomData
 
 
                 // parametr T0
-                double[] T0 = { 10, 1000, 100000, 10000000, 1000000000 };
-                int[] spanSum = { 0, 0, 0, 0, 0 };
-                using (StreamWriter swr = new StreamWriter(resultFileName3))
-                {
-                    swr.WriteLine("indeks \t 10 \t 100 \t 1000 \t 10000 \t 100000 NEHacc");
+                //double[] T0 = { 0.0001, 0.001, 0.01, 0.1, 1 };
+                //int[] spanSum = { 0, 0, 0, 0, 0 };
+                //using (StreamWriter swr = new StreamWriter(resultFileName3))
+                //{
+                //    swr.WriteLine("indeks \t 0.0001 \t 0.001 \t 0.01 \t 0.1 \t 1");
+                //    SPD_Lab2.Util<SchedulingTask>.CreateRandomDataSet(dataFileName, amountOfTasks, amountOfMachines);
+                //    tasks = SPD_Lab2.Util<SchedulingTask>.SeedData(out int t, out int m, dataFileName);
+                //    for (int j = 0; j < 10; j++)
+                //    {
+                //        //string r = $"{j}";
+                //        for (int k = 0; k < T0.Length; k++)
+                //        {
+                //            result = SPD_Lab3.Util<SchedulingTask>.SimulatedAnnealing(tasks.ToList(), SPD_Lab3.Util<SchedulingTask>.Swap, T0[j]);
 
-                    for (int j = 1; j < 11; j++)
+                //            int p = SPD_Lab2.Util<SchedulingTask>.CalculateSpanC(tasks.Length, tasks[0].TimeOnMachine.Length, result);
+                //            //r += $" \t {p}";
+                //            spanSum[k] += p;
+                //        }
+                //        //r += $" \t {SPD_Lab2.Util<SchedulingTask>.CalculateSpanC2(SPD_Lab2.Util<SchedulingTask>.NEHAccelerated(tasks.ToList()).ToArray(), 0)}";
+                //        //swr.WriteLine(r);
+                //    }
+                //    string XD = "\t";
+                //    foreach (var x in spanSum)
+                //    {
+                //        XD += $"{x / 10} \t";
+                //    }
+                //    XD += $" \t {SPD_Lab2.Util<SchedulingTask>.CalculateSpanC2(SPD_Lab2.Util<SchedulingTask>.NEHAccelerated(tasks.ToList()).ToArray(), 0)}";
+                //    swr.WriteLine(XD);
+                //}
+
+                //probMOD
+                //bool probMOD = false;
+                //using (StreamWriter swr = new StreamWriter(resultFileName4))
+                //{
+                //    swr.WriteLine(" nie \t tak ");
+                //    amountOfMachines = 5;
+                //    for (int s = 0; s < 5; s++)
+                //    {
+                //        int[] spanSum = { 0, 0 };
+                //        amountOfTasks += 5;
+                //        SPD_Lab2.Util<SchedulingTask>.CreateRandomDataSet(dataFileName, amountOfTasks, amountOfMachines);
+                //        tasks = SPD_Lab2.Util<SchedulingTask>.SeedData(out int t, out int m, dataFileName);
+
+                //        for (int j = 0; j < 10; j++)
+                //        {
+                //            for (int k = 0; k < spanSum.Length; k++)
+                //            {
+                //                result = SPD_Lab3.Util<SchedulingTask>.SimulatedAnnealing(tasks.ToList(), SPD_Lab3.Util<SchedulingTask>.Swap, probabilityMOD: probMOD);
+
+                //                int p = SPD_Lab2.Util<SchedulingTask>.CalculateSpanC(tasks.Length, tasks[0].TimeOnMachine.Length, result);
+                //                spanSum[k] += p;
+                //                probMOD = !probMOD;
+                //            }
+                //        }
+                //        string XD = "\t";
+                //        foreach (var x in spanSum)
+                //        {
+                //            XD += $"{x / 10} \t";
+                //        }
+                //        swr.WriteLine(XD);
+                //    }
+                //}
+
+                //mod z Cmax
+                bool cmaxMOD = false;
+                using (StreamWriter swr = new StreamWriter(resultFileName4))
+                {
+                    swr.WriteLine(" nie \t tak ");
+                    amountOfTasks = 100;
+                    for (int s = 0; s < 5; s++)
                     {
-                        string r = $"{j}";
+                        int[] spanSum = { 0, 0 };
+                        amountOfTasks += 50;
                         SPD_Lab2.Util<SchedulingTask>.CreateRandomDataSet(dataFileName, amountOfTasks, amountOfMachines);
                         tasks = SPD_Lab2.Util<SchedulingTask>.SeedData(out int t, out int m, dataFileName);
 
-                        for (int k = 0; k < T0.Length; k++)
+                        for (int j = 0; j < 10; j++)
                         {
-                            result = SPD_Lab3.Util<SchedulingTask>.SimulatedAnnealing(tasks.ToList(), SPD_Lab3.Util<SchedulingTask>.Swap, T0: T0[k]);
+                            for (int k = 0; k < spanSum.Length; k++)
+                            {
+                                result = SPD_Lab3.Util<SchedulingTask>.SimulatedAnnealing(tasks.ToList(), SPD_Lab3.Util<SchedulingTask>.Swap, cmaxMOD: cmaxMOD);
 
-                            int p = SPD_Lab2.Util<SchedulingTask>.CalculateSpanC(tasks.Length, tasks[0].TimeOnMachine.Length, result);
-                            r += $" \t {p}";
-                            spanSum[k] += p;
+                                int p = SPD_Lab2.Util<SchedulingTask>.CalculateSpanC(tasks.Length, tasks[0].TimeOnMachine.Length, result);
+                                spanSum[k] += p;
+                                cmaxMOD = !cmaxMOD;
+                            }
                         }
-                        r += $" \t {SPD_Lab2.Util<SchedulingTask>.CalculateSpanC2(SPD_Lab2.Util<SchedulingTask>.NEHAccelerated(tasks.ToList()).ToArray(), 0)}";
-                        swr.WriteLine(r);
+                        string XD = "\t";
+                        foreach (var x in spanSum)
+                        {
+                            XD += $"{x / 10} \t";
+                        }
+                        swr.WriteLine(XD);
                     }
-                    string XD = "\t";
-                    foreach (var x in spanSum)
-                    {
-                        XD += $"{x/10} \t";
-                    }
-                    swr.WriteLine(XD);
                 }
             }
             catch (Exception e)
