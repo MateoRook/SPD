@@ -13,7 +13,7 @@ namespace SPD_Lab3
             double u = 0.8,
             double T0 = 80)
         {
-            List<SchedulingTask> piZero = SPD_Lab2.Util<SchedulingTask>.NEHAccelerated(tasks).ToList();
+            List<SchedulingTask> piZero = tasks; //SPD_Lab2.Util<SchedulingTask>.NEHAccelerated(tasks).ToList();
             Random random = new Random();
             double TEND = 1;
             double probability;
