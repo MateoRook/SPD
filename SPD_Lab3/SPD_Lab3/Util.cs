@@ -10,8 +10,8 @@ namespace SPD_Lab3
     {
         public static List<SchedulingTask> SimulatedAnnealing(List<SchedulingTask> tasks,
             Action<List<SchedulingTask>, int, int> action, 
-            double u = 0.99999,
-            double T0 = 80,
+            double u = 0.8,
+            double T0 = 1000,
             bool probabilityMOD = false,
             bool cmaxMOD = false,
             bool isNeutral = false)
@@ -23,7 +23,7 @@ namespace SPD_Lab3
                 piZero = SPD_Lab2.Util<SchedulingTask>.NEHAccelerated(tasks).ToList();
 
             Random random = new Random();
-            double TEND = 1;
+            double TEND = 0.0001;
             double probability;
             //double T0 = 1000;
             while (TEND < T0)
