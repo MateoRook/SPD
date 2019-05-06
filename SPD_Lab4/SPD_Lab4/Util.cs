@@ -8,9 +8,10 @@ namespace SPD_Lab4
 {
     public static class Util
     {
-        public static List<SchedulingTask> SeedData(out int amountOfTasks, string path)
+        public static List<SchedulingTask> SeedData(string path)
         {
             SchedulingTask[] tasks;
+            int amountOfTasks = 0;
 
             using (StreamReader sr = new StreamReader(path))
             {
