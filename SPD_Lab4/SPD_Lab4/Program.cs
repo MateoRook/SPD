@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace SPD_Lab4
 {
@@ -7,10 +8,11 @@ namespace SPD_Lab4
         static void Main(string[] args)
         {
             string dataFileName = "in50.txt";
-            SchedulingTask[] tasks;
+            List<SchedulingTask> tasks;
 
             tasks = Util.SeedData(out int amountOfTasks, dataFileName);
-            Console.WriteLine();
+            int spanC = Util.CalculateSpanC(Util.Schrage(tasks));
+            Console.WriteLine(spanC);
         }
     }
 }
