@@ -40,7 +40,6 @@ namespace SPD_Lab4
         {
             int t = tasks.Min(x => x.R);
             int j = 0;
-            int jmax = tasks.Max(x => x.Q);
             List<SchedulingTask> G = new List<SchedulingTask>();
             List<SchedulingTask> PI = new List<SchedulingTask>();
             SchedulingTask task;
@@ -49,7 +48,7 @@ namespace SPD_Lab4
             {
                 while (tasks.Count != 0 && tasks.Min(x => x.R) <= t)
                 {
-                    j = tasks.FindIndex(x => x.R == t);
+                    j = tasks.FindIndex(x => x.R == tasks.Min(y => y.R));
                     G.Add(tasks.ElementAt(j));
                     tasks.RemoveAt(j);
                 }
@@ -57,8 +56,7 @@ namespace SPD_Lab4
                     t = tasks.Min(x => x.R);
                 else
                 {
-                    j = G.FindIndex(x => x.Q == jmax);
-                    jmax = j;
+                    j = G.FindIndex(x => x.Q == G.Max(y => y.Q));
                     task = G.ElementAt(j);
                     PI.Add(task);
                     G.RemoveAt(j);

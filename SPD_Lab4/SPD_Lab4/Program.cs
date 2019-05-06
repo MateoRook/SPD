@@ -7,7 +7,7 @@ namespace SPD_Lab4
     {
         static void Main(string[] args)
         {
-            string dataFileName = "in50.txt";
+            string dataFileName = "in200.txt";
             List<SchedulingTask> tasks;
 
             tasks = Util.SeedData(out int amountOfTasks, dataFileName);
