@@ -36,6 +36,46 @@ namespace SPD_Lab4
             return tasks.ToList();
         }
 
+        public static int SchragePmtn(List<SchedulingTask> tasks)
+        {
+            int Cmax = 0;
+            SchedulingTask t_j, task = new SchedulingTask(0,0,0);
+            List<SchedulingTask> G = new List<SchedulingTask>();
+            int t = 0;
+            int q = int.MaxValue;
+            int j;
+            while (tasks.Count != 0 || G.Count != 0)
+            {
+                while (tasks.Count != 0 && tasks.Min(y => y.R) <= t)
+                {
+                    j = tasks.FindIndex(x => x.R == tasks.Min(y => y.R));
+                    G.Add(tasks.ElementAt(j));
+                    t_j = tasks.ElementAt(j);
+                    tasks.RemoveAt(j);
+
+                    if (t_j.Q > q)
+                    {
+                        task.P = t - t_j.R;
+                        t = t_j.R;
+                        if (task.P > 0)
+                            G.Add(task);
+                    }
+                }
+                if (G.Count == 0)
+                    t = tasks.Min(x => x.R);
+                else
+                {
+                    j = G.FindIndex(x => x.Q == G.Max(y => y.Q));
+                    task = G.ElementAt(j);
+                    q = task.Q;
+                    G.RemoveAt(j);
+                    t += task.P;
+                    Cmax = Math.Max(Cmax, t + task.Q);
+                }
+            }
+            return Cmax;
+        }
+
         public static List<SchedulingTask> Schrage(List<SchedulingTask> tasks)
         {
             int t = tasks.Min(x => x.R);

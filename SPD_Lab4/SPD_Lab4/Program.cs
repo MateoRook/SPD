@@ -13,6 +13,7 @@ namespace SPD_Lab4
             tasks = Util.SeedData(out int amountOfTasks, dataFileName);
             int spanC = Util.CalculateSpanC(Util.Schrage(tasks));
             Console.WriteLine(spanC);
+            Console.WriteLine(Util.SchragePmtn(tasks));
         }
     }
 }
