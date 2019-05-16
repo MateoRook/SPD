@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SPD_Lab4
 {
-    public class SchedulingTask
+    public class SchedulingTask : ICloneable
     {
         public int R { get; set; }
         public int P { get; set; }
@@ -15,6 +15,11 @@ namespace SPD_Lab4
             R = r;
             P = p;
             Q = q;
+        }
+
+        public object Clone()
+        {
+            return new SchedulingTask(R,P,Q);
         }
     }
 }
