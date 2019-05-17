@@ -23,16 +23,18 @@ namespace SPD_Lab4
 
                     tasks = Util.SeedData(dataFileName);
                     int schrage1 = Util.CalculateSpanC(Util.Schrage(tasks));
-                    int pmtn1 = Util.SchragePmtn(tasks);
+                    int pmtn1 = Util.SchragePmtn(tasks.Clone());
                     tasks = Util.SeedData(dataFileName2);
                     int schrage2 = Util.CalculateSpanC(Util.Schrage(tasks));
-                    int pmtn2 = Util.SchragePmtn(tasks);
+                    int pmtn2 = Util.SchragePmtn(tasks.Clone());
                     tasks = Util.SeedData(dataFileName3);
                     int schrage3 = Util.CalculateSpanC(Util.Schrage(tasks));
-                    int pmtn3 = Util.SchragePmtn(tasks);
+                    int pmtn3 = Util.SchragePmtn(tasks.Clone());
 
                     swr.WriteLine($"Schrage \t {schrage1} \t {schrage2} \t {schrage3}");
                     swr.WriteLine($"Schrage Pmtn \t {pmtn1} \t {pmtn2} \t {pmtn3}");
+                    tasks = Util.SeedData("in.txt");
+                    Console.WriteLine(Util.CalculateSpanC(Util.Carelier(tasks)));
                 }
             }
             catch (Exception e)
