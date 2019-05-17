@@ -17,7 +17,7 @@ namespace SPD_Lab4
             int q_b;
             List<SchedulingTask> PI = new List<SchedulingTask>();
             List<SchedulingTask> K = new List<SchedulingTask>();
-            List<SchedulingTask> Ku = new List<SchedulingTask>();
+            List<SchedulingTask> tmp = new List<SchedulingTask>();
             IEnumerable<SchedulingTask> cc = new List<SchedulingTask>();
             SchedulingTask task, taskc;
             UB = CalculateSpanC(tasks);
@@ -52,15 +52,16 @@ namespace SPD_Lab4
             taskc.R = Math.Max(PI.ElementAt(c).R, r + p);
 
             LB = SchragePmtn(PI.Clone());
-            Ku = PI.GetRange(c, b - c + 1);
-            ru = Ku.Min(t => t.R);
-            qu = Ku.Min(t => t.Q);
-            pu = Ku.Sum(t => t.P);
+            K.Insert(0, taskc);
+            ru = K.Min(t => t.R);
+            qu = K.Min(t => t.Q);
+            pu = K.Sum(t => t.P);
             LB = Math.Max(Math.Max(r + p + q, ru + qu + pu), LB);
+
             if (LB < UB)
-                PI = Carelier(PI.Clone());
+                PI = Carelier(PI.Clone()); // bez Clone program dziala w nieskonczoność
             taskc.R = task.R;
-            taskc.Q = Math.Max(PI.ElementAt(c).Q, q + p);
+            taskc.Q = Math.Max(taskc.Q, q + p);
             LB = SchragePmtn(PI.Clone());
             LB = Math.Max(Math.Max(r + p + q, ru + qu + pu), LB);
             if (LB < UB)
