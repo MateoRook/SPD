@@ -48,12 +48,15 @@ namespace SPD_Lab5
             //Console.WriteLine("Problem solved in " + solver.Iterations() + " iterations");
             //Console.WriteLine("Problem solved in " + solver.Nodes() + " branch-and-bound nodes");
 
-            string dataFileName = "in0.txt";
-            List<SchedulingTask> tasks;
+            //string dataFileName = "in0.txt";
+            //List<SchedulingTask> tasks;
 
-            tasks = SPD_Lab4.Util.SeedData(dataFileName);
+            //tasks = SPD_Lab4.Util.SeedData(dataFileName);
 
-            Util.RPQProblemCP(tasks);
+            //Util.RPQProblemCP(tasks);
+
+            List<TaskWiti> taskWitis = Util.SeedData("witi.txt");
+            Util.WiTiCp(taskWitis);
         }
     }
 }
