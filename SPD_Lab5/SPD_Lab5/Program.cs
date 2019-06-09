@@ -58,8 +58,10 @@ namespace SPD_Lab5
             //List<TaskWiti> taskWitis = Util.SeedData("witi.txt");
             //Util.WiTiCp(taskWitis);
 
-            List<Job> jobs = Util.InitJobList2();
-            int machines = 3;
+            //List<Job> jobs = Util.InitJobList2();
+            //int machines = 3;
+            List<Job> jobs = Util.SeedDataJobShop("jobshop.txt", out int machines);
+            
             Util.JobShopCp(jobs, machines);
         }
     }

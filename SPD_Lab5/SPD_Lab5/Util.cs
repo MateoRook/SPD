@@ -176,10 +176,9 @@ namespace SPD_Lab5
             Console.WriteLine("Objective value = " + solver.Value(makespan));
         }
 
-        public static List<Job> SeedDataJobShop(string path)
+        public static List<Job> SeedDataJobShop(string path, out int amountOfMachines)
         {
-            List<Job> jobs; ;
-            int amountOfMachines = 0;
+            List<Job> jobs;
             int amountOfJobs = 0;
             int amountOfTasks = 0;
 
