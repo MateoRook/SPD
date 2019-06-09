@@ -199,11 +199,11 @@ namespace SPD_Lab5
 
                     List<TaskJob> tasks = new List<TaskJob>(int.Parse(signs[0]));
 
-                    for (int j = 0; j < tasks.Count; j++)
+                    for (int j = 0; j < tasks.Capacity; j++)
                     {
-                        tasks.Add(new TaskJob(j, int.Parse(signs[1 + j]), int.Parse(signs[2 + j])));
+                        tasks.Add(new TaskJob(j, int.Parse(signs[2 + j*2]), int.Parse(signs[1 + j*2]) - 1));
                     }
-                    jobs.Add(new Job(0, tasks));
+                    jobs.Add(new Job(i, tasks));
                 }
             }
             return jobs;
