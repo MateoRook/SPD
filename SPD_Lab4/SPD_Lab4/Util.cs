@@ -21,7 +21,7 @@ namespace SPD_Lab4
             IEnumerable<SchedulingTask> cc = new List<SchedulingTask>();
             SchedulingTask task, taskc;
             UB = CalculateSpanC(tasks);
-            PI = Schrage(tasks);
+            PI = Schrage(tasks.Clone()); // tu musi być Clone lub należy zmodyfikowac Schrage by nie modyfikował wejścia
             U = CalculateSpanC(PI);
             if (U < UB)
             {
@@ -59,14 +59,15 @@ namespace SPD_Lab4
             LB = Math.Max(Math.Max(r + p + q, ru + qu + pu), LB);
 
             if (LB < UB)
-                PI = Carelier(PI.Clone()); // bez Clone program dziala w nieskonczoność
-            taskc.R = task.R;
+                PI = Carelier(PI); // już nie musi być Clone
+            taskc.R = task.R; // i teraz dobrze działa odtwarzanie
             taskc.Q = Math.Max(taskc.Q, q + p);
             LB = SchragePmtn(PI.Clone());
             LB = Math.Max(Math.Max(r + p + q, ru + qu + pu), LB);
             if (LB < UB)
-                PI = Carelier(PI.Clone());
+                PI = Carelier(PI); // już nie musi być Clone
             taskc.Q = task.Q;
+            //tasks = PI;
             return PI;
         }
 

@@ -33,8 +33,17 @@ namespace SPD_Lab4
 
                     swr.WriteLine($"Schrage \t {schrage1} \t {schrage2} \t {schrage3}");
                     swr.WriteLine($"Schrage Pmtn \t {pmtn1} \t {pmtn2} \t {pmtn3}");
-                    tasks = Util.SeedData("in.txt");
-                    Console.WriteLine(Util.CalculateSpanC(Util.Carelier(tasks)));
+                    tasks = Util.SeedData("in50.txt");
+                    Console.WriteLine(Util.CalculateSpanC(Util.Carelier(tasks.Clone())));
+                    int c = 0;
+                    foreach (var item in tasks)
+                    {
+                        foreach (var item2 in Util.Carelier(tasks.Clone()))
+                        {
+                            if (item.R == item2.R && item.P == item2.P && item.Q == item2.Q) c++;
+                        }
+                    }
+                    Console.WriteLine(c);
                 }
             }
             catch (Exception e)

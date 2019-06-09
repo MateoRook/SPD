@@ -55,8 +55,12 @@ namespace SPD_Lab5
 
             //Util.RPQProblemCP(tasks);
 
-            List<TaskWiti> taskWitis = Util.SeedData("witi.txt");
-            Util.WiTiCp(taskWitis);
+            //List<TaskWiti> taskWitis = Util.SeedData("witi.txt");
+            //Util.WiTiCp(taskWitis);
+
+            List<Job> jobs = Util.InitJobList2();
+            int machines = 3;
+            Util.JobShopCp(jobs, machines);
         }
     }
 }

@@ -11,6 +11,205 @@ namespace SPD_Lab5
 {
     public static class Util
     {
+        public static List<Job> InitJobList2()
+        {
+            List<Job> jobs = new List<Job>();
+
+            List<TaskJob> taskList = new List<TaskJob>();
+            taskList.Add(new TaskJob(0, 4, 0));
+            taskList.Add(new TaskJob(1, 2, 2));
+            taskList.Add(new TaskJob(2, 5, 1));
+            jobs.Add(new Job(0, taskList));
+
+            List<TaskJob> taskList2 = new List<TaskJob>();
+            taskList2.Add(new TaskJob(0, 2, 1));
+            taskList2.Add(new TaskJob(1, 2, 2));
+            jobs.Add(new Job(1, taskList2));
+
+            List<TaskJob> taskList3 = new List<TaskJob>();
+            taskList3.Add(new TaskJob(0, 4, 0));
+            taskList3.Add(new TaskJob(1, 2, 1));
+            jobs.Add(new Job(2, taskList3));
+
+            List<TaskJob> taskList4 = new List<TaskJob>();
+            taskList4.Add(new TaskJob(0, 2, 2));
+            taskList4.Add(new TaskJob(1, 2, 0));
+            taskList4.Add(new TaskJob(2, 5, 1));
+            taskList4.Add(new TaskJob(3, 2, 2));
+            jobs.Add(new Job(3, taskList4));
+
+            return jobs;
+        }
+
+        public static List<Job> InitJobList()
+        {
+            List<Job> jobs = new List<Job>();
+
+            List<TaskJob> taskList = new List<TaskJob>();
+            taskList.Add(new TaskJob(0, 65, 0));
+            taskList.Add(new TaskJob(1, 5, 1));
+            taskList.Add(new TaskJob(2, 15, 2));
+            jobs.Add(new Job(0, taskList));
+
+            List<TaskJob> taskList2 = new List<TaskJob>();
+            taskList2.Add(new TaskJob(0, 15, 0));
+            taskList2.Add(new TaskJob(1, 25, 1));
+            taskList2.Add(new TaskJob(2, 10, 2));
+            jobs.Add(new Job(1, taskList2));
+
+            List<TaskJob> taskList3 = new List<TaskJob>();
+            taskList3.Add(new TaskJob(0, 25, 0));
+            taskList3.Add(new TaskJob(1, 30, 1));
+            taskList3.Add(new TaskJob(2, 40, 2));
+            jobs.Add(new Job(2, taskList3));
+
+            List<TaskJob> taskList4 = new List<TaskJob>();
+            taskList4.Add(new TaskJob(0, 20, 0));
+            taskList4.Add(new TaskJob(1, 35, 1));
+            taskList4.Add(new TaskJob(2, 10, 2));
+            jobs.Add(new Job(3, taskList4));
+
+            List<TaskJob> taskList5 = new List<TaskJob>();
+            taskList5.Add(new TaskJob(0, 15, 0));
+            taskList5.Add(new TaskJob(1, 25, 1));
+            taskList5.Add(new TaskJob(2, 10, 2));
+            jobs.Add(new Job(4, taskList5));
+
+            List<TaskJob> taskList6 = new List<TaskJob>();
+            taskList6.Add(new TaskJob(0, 25, 0));
+            taskList6.Add(new TaskJob(1, 30, 1));
+            taskList6.Add(new TaskJob(2, 40, 2));
+            jobs.Add(new Job(5, taskList6));
+
+            List<TaskJob> taskList7 = new List<TaskJob>();
+            taskList7.Add(new TaskJob(0, 20, 0));
+            taskList7.Add(new TaskJob(1, 35, 1));
+            taskList7.Add(new TaskJob(2, 10, 2));
+            jobs.Add(new Job(6, taskList7));
+
+            List<TaskJob> taskList8 = new List<TaskJob>();
+            taskList8.Add(new TaskJob(0, 10, 0));
+            taskList8.Add(new TaskJob(1, 15, 1));
+            taskList8.Add(new TaskJob(2, 50, 2));
+            jobs.Add(new Job(7, taskList8));
+
+            List<TaskJob> taskList9 = new List<TaskJob>();
+            taskList9.Add(new TaskJob(0, 50, 0));
+            taskList9.Add(new TaskJob(1, 10, 1));
+            taskList9.Add(new TaskJob(2, 29, 2));
+            jobs.Add(new Job(8, taskList9));
+
+            return jobs;
+        }
+
+
+        public static void JobShopCp(List<Job> jobs, int machines)
+        {
+            CpModel model = new CpModel();
+            int maxValue = 0;
+            foreach (var job in jobs)
+            {
+                maxValue += job.Tasks.Sum(j => j.Duration);
+            }
+
+            List<List<IntervalVar>> intervals = new List<List<IntervalVar>>(jobs.Count);
+            List<List<IntVar>> starts = new List<List<IntVar>>(jobs.Count);
+            List<List<IntVar>> ends = new List<List<IntVar>>(jobs.Count);
+            List<List<IntervalVar>> machinesIntervals = new List<List<IntervalVar>>();
+            List<List<IntVar>> machinesStarts = new List<List<IntVar>>();
+
+            for (int i = 0; i < machines; i++)
+            {
+                machinesIntervals.Add(new List<IntervalVar>());
+                machinesStarts.Add(new List<IntVar>());
+            }
+
+            foreach (var job in jobs)
+            {
+                starts.Add(new List<IntVar>());
+                ends.Add(new List<IntVar>());
+                intervals.Add(new List<IntervalVar>());
+                foreach (var task in job.Tasks)
+                {
+                    IntVar start = model.NewIntVar(0, maxValue, job.Name + task.Name);
+                    IntVar end = model.NewIntVar(0, maxValue, job.Name + task.Name);
+                    IntervalVar oneTask =
+                        model.NewIntervalVar(start, task.Duration, end, job.Name + task.Name);
+                    intervals[job.JobId].Add(oneTask);
+                    starts[job.JobId].Add(start);
+                    ends[job.JobId].Add(end);
+                    machinesIntervals[task.Machine].Add(oneTask);
+                    machinesStarts[task.Machine].Add(start);
+                }
+            }
+
+            for (int j = 0; j < jobs.Count; ++j)
+            {
+                for (int t = 0; t < jobs[j].Tasks.Count - 1; ++t)
+                {
+                    model.Add(ends[j][t] <= starts[j][t + 1]);
+                }
+            }
+
+            for (int machineId = 0; machineId < machines; ++machineId)
+            {
+                model.AddNoOverlap(machinesIntervals[machineId].ToArray());
+            }
+
+            IntVar[] allEnds = new IntVar[jobs.Count];
+            for (int i = 0; i < jobs.Count; i++)
+            {
+                allEnds[i] = ends[i].Last();
+            }
+
+            IntVar makespan = model.NewIntVar(0, maxValue, "makespan");
+            model.AddMaxEquality(makespan, allEnds);
+            model.Minimize(makespan);
+
+            CpSolver solver = new CpSolver();
+            solver.StringParameters = "max_time_in_seconds:30.0";
+            CpSolverStatus solverStatus = solver.Solve(model);
+            if (solverStatus != CpSolverStatus.Optimal)
+            {
+                Console.WriteLine("Solver didn’t find optimal solution!");
+            }
+            Console.WriteLine("Objective value = " + solver.Value(makespan));
+        }
+
+        public static List<Job> SeedDataJobShop(string path)
+        {
+            List<Job> jobs; ;
+            int amountOfMachines = 0;
+            int amountOfJobs = 0;
+            int amountOfTasks = 0;
+
+            using (StreamReader sr = new StreamReader(path))
+            {
+                string line = sr.ReadLine();
+                string[] signs = line.Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+
+                amountOfJobs = int.Parse(signs[0]);
+                amountOfMachines = int.Parse(signs[1]);
+                amountOfTasks = int.Parse(signs[2]);
+
+                jobs = new List<Job>(amountOfJobs);
+                for (int i = 0; i < amountOfJobs; i++)
+                {
+                    line = sr.ReadLine();
+                    signs = line.Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+
+                    List<TaskJob> tasks = new List<TaskJob>(int.Parse(signs[0]));
+
+                    for (int j = 0; j < tasks.Count; j++)
+                    {
+                        tasks.Add(new TaskJob(j, int.Parse(signs[1 + j]), int.Parse(signs[2 + j])));
+                    }
+                    jobs.Add(new Job(0, tasks));
+                }
+            }
+            return jobs;
+        }
+
         public static List<TaskWiti> SeedData(string path)
         {
             TaskWiti[] tasks;
